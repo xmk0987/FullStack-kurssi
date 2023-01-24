@@ -6,6 +6,9 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
+function mostVoted(array) {
+  return array.indexOf(Math.max(...array))
+}
 
 const App = () => {
   const anecdotes = [
@@ -24,6 +27,9 @@ const App = () => {
 
   const handleButtonClick = () => {
     let randomNumber = Math.floor(Math.random()*anecdotes.length)
+    while(selected === randomNumber){
+      randomNumber = Math.floor(Math.random()*anecdotes.length)
+    }
     setSelected(randomNumber)
   }
 
@@ -33,14 +39,18 @@ const App = () => {
     setPoints(copy) 
   }
 
-  
+  var indexOfMax = mostVoted(points)
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>This anecdote has {points[selected]} votes</p>
       <Button handleClick={handleButtonClick} text='next anecdote'/>
       <Button handleClick={handleVoteClick} text='vote'/>
+      <h1>Anecdote with the most votes</h1>
+      <p>{anecdotes[indexOfMax]}</p>
+      <p>This anecdote has {points[indexOfMax]} votes</p>
     </div>
   )
 }
