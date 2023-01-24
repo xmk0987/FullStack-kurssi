@@ -1,62 +1,136 @@
-const Header = (props) => {
-  return(
-    <h1>{props.course}</h1>
-    
-  )
-}
 
-const Content = (props) => {
-  return(
-    props.parts.map(part => <p key={part.name}>{part.name} {part.exercises}</p>)
-  )
-}
  
-const Total = (props) => {
+/*
+props.courses.map(( course) => { 
+      <p><strong>{course.name}</strong></p>
+      console.log(`Course name: ` , course.name)
+      {
+        course.parts.map(( part) => {
+          <p>{part.name} {part.exercises}</p>
+          console.log(`Part: `, part.name)     
+        })
+      }
+        }
+      )
+
+*/
+
+/*const Total = (props) => {
   const result = props.parts.map(part => part.exercises).reduce((partialSum, a) => partialSum + a,0)
   return(
     <p><strong>Total of {result} exercises</strong></p>
   )
   
 }
+//<Total parts = {props.courses.parts}/>
 
 
-const Course = (props) =>{
-  return (
+const Part = ({part}) => {
+  console.log("part testi", part)
+  course.parts.map(part => <p>{part.name} {part.exercises}</p>)
+}
+
+
+
+const Content = ({ course }) =>{ 
+  console.log("toimiiks t-äää " , course)
+  const nimet = course.map(name => name.name)
+  console.log("NIIMET " ,nimet)
+  return(
     <div>
-      <Header course={props.course.name} />
-      <Content parts = {props.course.parts}/>
-      <Total parts = {props.course.parts}/>
+      {course.map(name => <p><strong>{name.name}</strong></p>)}
     </div>
+    
+    
+  )
+}
+
+
+*/
+
+const Total = ({parts}) => {
+  const result = parts.map(part => part.exercises).reduce((partialSum, a) => partialSum + a,0)
+  return(
+    <p><strong>Total of {result} exercises</strong></p>
+  )
+  
+}
+
+const Part = ({part}) => {
+  console.log("this is part", part)
+  return(
+    <p>{part.name} {part.exercises}</p>
+  )
+}
+
+const Course = ({course}) =>{
+  console.log(course)
+  return(
+    <>
+      <h3>{course.name}</h3>
+      {course.parts.map(part => 
+          <Part key={part.id} part={part} />
+        )}
+      <Total parts = {course.parts}/>
+      
+    </>
+    
   )
 }
 
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      },
-      {
-        name: 'Redux',
-        exercises: 11
-      }
-    ]
-  }
   
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
 
   return (
     <div>
-      <Course course={course} />
+      <h1>Web development curriculum</h1>
+      {courses.map(course => 
+            <Course key={course.id} course={course} />
+          )}
     </div>
   )
 }
