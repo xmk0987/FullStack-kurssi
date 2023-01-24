@@ -12,7 +12,7 @@ const Content = (props) => {
 }
  
 const Total = (props) => {
-  const result = props.parts.map(part => part.exercises).reduce((partialSum, a) => partialSum +a,0)
+  const result = props.parts.map(part => part.exercises).reduce((partialSum, a) => partialSum + a,0)
   return(
     <p><strong>Total of {result} exercises</strong></p>
   )
