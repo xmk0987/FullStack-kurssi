@@ -8,6 +8,11 @@ const Button = ({ handleClick, text }) => (
 
 const Statistics = (props) => {
   var all = props.good + props.neutral + props.bad
+  if(all == 0){
+    return(
+      <p>No feedback given</p>
+    )
+  }
   return(
   <>
     <p>good {props.good}</p>
