@@ -6,6 +6,7 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -17,23 +18,29 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
+  const [points, setPoints] = useState(new Uint8Array(8))
 
   const [selected, setSelected] = useState(0)
 
   const handleButtonClick = () => {
     let randomNumber = Math.floor(Math.random()*anecdotes.length)
-    console.log(randomNumber)
-    if(setSelected(randomNumber) === selected){
-
-    }
     setSelected(randomNumber)
   }
+
+  const handleVoteClick = () => {
+    const copy = [...points]
+    copy[selected] += 1
+    setPoints(copy) 
+  }
+
+  
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <p>This anecdote has {points[selected]} votes</p>
       <Button handleClick={handleButtonClick} text='next anecdote'/>
+      <Button handleClick={handleVoteClick} text='vote'/>
     </div>
   )
 }
