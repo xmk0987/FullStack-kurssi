@@ -1,23 +1,12 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
-
-const Person = ({name, number}) => {
+const Person = ({person, deleteNameOf}) => {
   return(
-    <>
-      <p>{name} {number}</p>
-    </>
-  )
-}
-
-const Persons = ({persons, filterName}) =>{
-  const personsToShow =  persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase()))
-  return (
-    <>
-    {personsToShow.map(person => 
-      <Person key = {person.name} name = {person.name} number = {person.number}/>
-      )}
-    </>
+    <li key="{person.id}">
+      {person.name} {person.number}
+      <button onClick={deleteNameOf}>DELETE</button>
+    </li>
     
   )
 }
@@ -45,20 +34,16 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilter] = useState('')
+ 
 
-  const hook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+  useEffect(() => {
+    personService
+      .getAll()
+        .then(initialPersons => {
+        setPersons(initialPersons)
       })
-  }
-  
-  useEffect(hook, [])
+  }, [])
 
-  console.log('render', persons.length, 'persons')
 
   const addName = (event) => {  
     event.preventDefault()
@@ -70,17 +55,25 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-
-      axios
-      .post('http://localhost:3001/persons', noteObject)
-      .then(response => {
-        console.log(response)
+      personService
+      .create(noteObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        
       })
-
-      setPersons(persons.concat(noteObject))
     }
   }
 
+  const deleteNameOf = async id => {
+    const wantedPerson = persons.find(person => person.id === id)
+    console.log(wantedPerson)
+    if(window.confirm(`Do you really want to delete ${wantedPerson.name}`)){
+      await personService.deleteName(id)
+      setPersons(persons.filter((person) => {
+      return person.id !== id;
+    }))
+    }
+  }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -104,7 +97,15 @@ const App = () => {
       newNumber = {newNumber} handleNumberChange = {handleNumberChange}/>
 
       <h2>Numbers</h2>
-      <Persons persons = {persons} filterName = {filterName}/>
+      <ul>
+        {persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase())).map(person =>
+          <Person 
+          key = {person.id} 
+          person = {person} 
+          deleteNameOf = {() => deleteNameOf(person.id)}/>
+          )}
+      </ul>
+      
     </div>
   )
 
