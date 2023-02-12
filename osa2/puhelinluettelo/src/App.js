@@ -33,6 +33,17 @@ const Notification = ({message}) => {
     return null
   }
   return (
+    <div className = "success">
+      {message}
+    </div>
+  )
+}
+
+const Error = ({message}) => {
+  if(message === null){
+    return null
+  }
+  return (
     <div className = "error">
       {message}
     </div>
@@ -45,7 +56,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilter] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
  
 
   useEffect(() => {
@@ -68,11 +80,16 @@ const App = () => {
         const wantedPerson = persons.find(person => person.name === newName)
         personService.update(wantedPerson.id, noteObject).then(returnedPerson => {
           setPersons(persons.map(person => person.id !== wantedPerson.id ? person : returnedPerson))
+        }).then(response => {
+          setSuccessMessage(`Updated phone number for ${wantedPerson.name}`)
         })
-        setErrorMessage(`Updated phone number for ${wantedPerson.name}`)
+        .catch(error => {
+          setErrorMessage(`Information of ${wantedPerson.name} has already been removed from server`)
+        })
         setTimeout(() => {
+          setSuccessMessage(null)
           setErrorMessage(null)
-        }, 5000)
+        }, 2000)
       }
     }
     else{
@@ -81,10 +98,11 @@ const App = () => {
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
       })
-      setErrorMessage(`Added ${newName}`)
+      setSuccessMessage(`Added ${newName}`)
       setTimeout(() => {
+        setSuccessMessage(null)
         setErrorMessage(null)
-      }, 5000)
+      }, 2000)
     }
   }
 
@@ -96,10 +114,11 @@ const App = () => {
       setPersons(persons.filter((person) => {
       return person.id !== id;
     }))
-    setErrorMessage(`Deleted ${wantedPerson.name}`)
+    setSuccessMessage(`Deleted ${wantedPerson.name}`)
         setTimeout(() => {
+          setSuccessMessage(null)
           setErrorMessage(null)
-        }, 5000)
+        }, 2000)
     }
   }
 
@@ -118,7 +137,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage}/>
+      <Notification message={successMessage}/>
+      <Error message={errorMessage}/>
 
       <Filter filterName = {filterName} handleFilterChange = {handleFilterChange}/>
       
