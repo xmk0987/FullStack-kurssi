@@ -47,14 +47,19 @@ const App = () => {
 
   const addName = (event) => {  
     event.preventDefault()
+    const noteObject = {
+      name: newName,
+      number: newNumber
+    }
     if(persons.some(person => person.name === newName)){
-      alert(`${newName} is already in phonebook`)
+      if(window.confirm(`${newName} is already in phonebook, replace the old number with a new one?`)){
+        const wantedPerson = persons.find(person => person.name === newName)
+        personService.update(wantedPerson.id, noteObject).then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== wantedPerson.id ? person : returnedPerson))
+        })
+      }
     }
     else{
-      const noteObject = {
-        name: newName,
-        number: newNumber
-      }
       personService
       .create(noteObject)
       .then(returnedPerson => {
