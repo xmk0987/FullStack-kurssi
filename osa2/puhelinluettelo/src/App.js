@@ -28,12 +28,24 @@ const Filter = ({filterName, handleFilterChange}) => {
   
 }
 
+const Notification = ({message}) => {
+  if(message === null){
+    return null
+  }
+  return (
+    <div className = "error">
+      {message}
+    </div>
+  )
+}
+
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
  
 
   useEffect(() => {
@@ -57,6 +69,10 @@ const App = () => {
         personService.update(wantedPerson.id, noteObject).then(returnedPerson => {
           setPersons(persons.map(person => person.id !== wantedPerson.id ? person : returnedPerson))
         })
+        setErrorMessage(`Updated phone number for ${wantedPerson.name}`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       }
     }
     else{
@@ -64,8 +80,11 @@ const App = () => {
       .create(noteObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
-        
       })
+      setErrorMessage(`Added ${newName}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
@@ -77,6 +96,10 @@ const App = () => {
       setPersons(persons.filter((person) => {
       return person.id !== id;
     }))
+    setErrorMessage(`Deleted ${wantedPerson.name}`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
     }
   }
 
@@ -95,6 +118,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage}/>
+
       <Filter filterName = {filterName} handleFilterChange = {handleFilterChange}/>
       
       <h2>Add New Entry</h2>
