@@ -3,7 +3,7 @@ import personService from './services/persons'
 
 const Person = ({person, deleteNameOf}) => {
   return(
-    <li key="{person.id}">
+    <li key={person.id}>
       {person.name} {person.number}
       <button onClick={deleteNameOf}>DELETE</button>
     </li>
