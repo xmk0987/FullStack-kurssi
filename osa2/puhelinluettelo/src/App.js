@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import personService from './services/persons'
 
 const Person = ({person, deleteNameOf}) => {
+  console.log(person.id)
   return(
-    <li key={person.id}>
+    <li key="{person.id}">
       {person.name} {person.number}
       <button onClick={deleteNameOf}>DELETE</button>
     </li>
