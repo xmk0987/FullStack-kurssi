@@ -102,7 +102,7 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setSuccessMessage(`Added new person ${newName}`)
       }).catch(error => {
-        setErrorMessage(`Person validation failed ${error.response.data} `)
+        setErrorMessage(`Person validation failed ${error.response.data.error} `)
       })
       
 
