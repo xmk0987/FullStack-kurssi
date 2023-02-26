@@ -76,6 +76,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
+
     if(persons.some(person => person.name === newName)){
       if(window.confirm(`${newName} is already in phonebook, replace the old number with a new one?`)){
         const wantedPerson = persons.find(person => person.name === newName)
@@ -94,16 +95,23 @@ const App = () => {
       }
     }
     else{
+
       personService
       .create(noteObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setSuccessMessage(`Added new person ${newName}`)
+      }).catch(error => {
+        setErrorMessage(`Person validation failed ${error.response.data} `)
       })
-      setSuccessMessage(`Added ${newName}`)
+      
+
       setTimeout(() => {
         setSuccessMessage(null)
         setErrorMessage(null)
       }, 2000)
+
+
     }
   }
 
