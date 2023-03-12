@@ -11,8 +11,8 @@ import NewBlogForm from './components/NewBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const [user, setUser] = useState(null)
@@ -22,7 +22,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs.sort((a,b) => b.likes -a.likes) )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
 
       blogService.setToken(user.token)
       setUser(user)
@@ -57,9 +57,9 @@ const App = () => {
     }
   }
 
-  const handleLogout = async (event) => {
+  const handleLogout = async () => {
     window.localStorage.removeItem('loggedBlogappUser')
-    window.location.reload();
+    window.location.reload()
   }
 
   const addBlog = async (blogObject) => {
@@ -80,7 +80,7 @@ const App = () => {
       likes: blogObject.likes + 1,
     }
     const updatedBlog = await blogService.update(blogObject.id, updatedBlogObject)
-    setBlogs(blogs.map(x => x.id === blogObject.id ? updatedBlog : x));
+    setBlogs(blogs.map(x => x.id === blogObject.id ? updatedBlog : x))
     setSuccessMessage('Blog updated!')
     setTimeout(() => {
       setSuccessMessage(null)
@@ -91,33 +91,33 @@ const App = () => {
     if(window.confirm(`Do you really want to delete ${blogObject.title}`)){
       await blogService.deleteBlog(blogObject.id)
       setBlogs(blogs.filter((blog) => {
-      return blog.id !== blogObject.id;
-    }))
-    setSuccessMessage(`Deleted ${blogObject.title}`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-          setErrorMessage(null)
-        }, 2000)
+        return blog.id !== blogObject.id
+      }))
+      setSuccessMessage(`Deleted ${blogObject.title}`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+        setErrorMessage(null)
+      }, 2000)
     }
   }
 
- 
 
-const loginForm = () => {
-  return (
-    <div>
-      <Togglable buttonLabel='login'>
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-        />
-      </Togglable>
-    </div>
-  )
-}
+
+  const loginForm = () => {
+    return (
+      <div>
+        <Togglable buttonLabel='login'>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+        </Togglable>
+      </div>
+    )
+  }
 
 
   if (user === null) {
@@ -132,7 +132,7 @@ const loginForm = () => {
   return (
     <div>
       <Notification message={successMessage}/>
-      <h2>{user.name} logged in</h2> 
+      <h2>{user.name} logged in</h2>
       <button onClick={handleLogout}>logout</button>
       <h2>Blogs:</h2>
       {blogs.map(blog =>
@@ -142,11 +142,11 @@ const loginForm = () => {
       <Togglable buttonLabel='New Blog' ref={blogFormRef}>
         <NewBlogForm createBlog={addBlog}/>
       </Togglable>
-      
-      
+
+
     </div>
   )
-  
+
 
 }
 
