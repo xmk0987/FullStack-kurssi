@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-const Blog = ({blog}) => {
+
+const Blog = ({blog, updateBlog}) => {
   const [visible, setVisible] = useState(false);
  // const blogRef = useRef()
   const blogStyle = {
@@ -11,9 +12,11 @@ const Blog = ({blog}) => {
     marginBottom: 5,
     
   }
-  if(blog.user.name === undefined){
-    window.location.reload()
-  }
+  
+
+   const handleLike = async () => {
+      await updateBlog(blog)
+   }
 
   const toggleVisibility = () => setVisible(!visible);
   return(
@@ -23,7 +26,7 @@ const Blog = ({blog}) => {
       {visible &&
       <div>
         {blog.url}<br/>
-        {blog.likes} &nbsp;<button type="button">like</button><br/>
+        {blog.likes} &nbsp;<button onClick={handleLike}>like</button><br/>
         {blog.user.name}
       </div>
       }

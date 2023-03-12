@@ -21,7 +21,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs( blogs.sort((a,b) => b.likes -a.likes) )
     )  
   }, [])
 
@@ -70,7 +70,21 @@ const App = () => {
     setTimeout(() => {
       setSuccessMessage(null)
     }, 5000)
+    window.location.reload()
 
+  }
+
+  const updateBlog = async(blogObject) => {
+    console.log(blogObject.id)
+    const updatedBlogObject = {
+      likes: blogObject.likes + 1,
+    }
+    const updatedBlog = await blogService.update(blogObject.id, updatedBlogObject)
+    setBlogs(blogs.map(x => x.id === blogObject.id ? updatedBlog : x));
+    setSuccessMessage('Blog updated!')
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 5000)
   }
 
 
@@ -110,7 +124,7 @@ const loginForm = () => {
       <button onClick={handleLogout}>logout</button>
       <h2>Blogs:</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
       )}
       <script src='Blog.js' async></script>
       <Togglable buttonLabel='New Blog' ref={blogFormRef}>
