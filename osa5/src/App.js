@@ -70,20 +70,11 @@ const App = () => {
     setTimeout(() => {
       setSuccessMessage(null)
     }, 5000)
+
   }
+
+
  
-  /*
-  const addBlog = async (blogObject) => {
-    const newBlog = await blogService.create(blogObject)
-    setBlogs(blogs.concat(newBlog))
-    setSuccessMessage('A New BLOG!')
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 5000)
-  }*/
-
-
-
 
 const loginForm = () => {
   return (
@@ -105,12 +96,12 @@ const loginForm = () => {
   if (user === null) {
     return (
       <div>
-        
         <Error message={errorMessage}/>
         {loginForm()}
       </div>
     )
   }
+
 
   return (
     <div>
@@ -121,10 +112,12 @@ const loginForm = () => {
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
-      
+      <script src='Blog.js' async></script>
       <Togglable buttonLabel='New Blog' ref={blogFormRef}>
         <NewBlogForm createBlog={addBlog}/>
       </Togglable>
+      
+      
     </div>
   )
   
