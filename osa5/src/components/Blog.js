@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 
-const Blog = ({blog, updateBlog}) => {
+const Blog = ({blog, updateBlog, deleteBlog}) => {
   const [visible, setVisible] = useState(false);
  // const blogRef = useRef()
   const blogStyle = {
@@ -18,6 +18,10 @@ const Blog = ({blog, updateBlog}) => {
       await updateBlog(blog)
    }
 
+   const handleDelete = async ()  => {
+      await deleteBlog(blog)
+   }
+
   const toggleVisibility = () => setVisible(!visible);
   return(
     <div style={blogStyle}>
@@ -27,7 +31,8 @@ const Blog = ({blog, updateBlog}) => {
       <div>
         {blog.url}<br/>
         {blog.likes} &nbsp;<button onClick={handleLike}>like</button><br/>
-        {blog.user.name}
+        {blog.user.name}<br/>
+        <button onClick={handleDelete}>Delete</button>
       </div>
       }
       

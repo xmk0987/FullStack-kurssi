@@ -87,6 +87,19 @@ const App = () => {
     }, 5000)
   }
 
+  const deleteBlog = async (blogObject) => {
+    if(window.confirm(`Do you really want to delete ${blogObject.title}`)){
+      await blogService.deleteBlog(blogObject.id)
+      setBlogs(blogs.filter((blog) => {
+      return blog.id !== blogObject.id;
+    }))
+    setSuccessMessage(`Deleted ${blogObject.title}`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+          setErrorMessage(null)
+        }, 2000)
+    }
+  }
 
  
 
@@ -124,7 +137,7 @@ const loginForm = () => {
       <button onClick={handleLogout}>logout</button>
       <h2>Blogs:</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog = {deleteBlog}/>
       )}
       <script src='Blog.js' async></script>
       <Togglable buttonLabel='New Blog' ref={blogFormRef}>
