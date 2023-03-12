@@ -129,7 +129,6 @@ const loginForm = () => {
     )
   }
 
-
   return (
     <div>
       <Notification message={successMessage}/>

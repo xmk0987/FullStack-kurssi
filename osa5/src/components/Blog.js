@@ -21,9 +21,10 @@ const Blog = ({blog, updateBlog, deleteBlog}) => {
    const handleDelete = async ()  => {
       await deleteBlog(blog)
    }
-
-  const toggleVisibility = () => setVisible(!visible);
-  return(
+   const user = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
+   const toggleVisibility = () => setVisible(!visible);
+   
+   return(
     <div style={blogStyle}>
       {blog.title} {blog.author} 
       <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
@@ -32,12 +33,16 @@ const Blog = ({blog, updateBlog, deleteBlog}) => {
         {blog.url}<br/>
         {blog.likes} &nbsp;<button onClick={handleLike}>like</button><br/>
         {blog.user.name}<br/>
-        <button onClick={handleDelete}>Delete</button>
+        {user.name === blog.user.name && 
+        <button className="delete" onClick={handleDelete}>Delete</button>}
+        
       </div>
       }
       
     </div> 
   )
+
+  
 }
 
 export default Blog
