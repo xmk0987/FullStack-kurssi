@@ -8,7 +8,7 @@ const AnecdoteForm = () => {
     const addAnecdote = (event) => {
         event.preventDefault()
         const content = event.target.anecdote.value
-        console.log(content)
+        console.log("TESTI TÄSSÄ " + content)
         event.target.anecdote.value = ''
         dispatch(createAnecdote(content))
   }
