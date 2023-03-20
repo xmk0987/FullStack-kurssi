@@ -9,8 +9,6 @@ import { useDispatch } from 'react-redux'
 
 const App = () => {
   const dispatch = useDispatch()
-
-  
   
   useEffect(() => {
     dispatch(initializeAnecdotes())
@@ -18,7 +16,6 @@ const App = () => {
 
   return (
     <div>
-      {console.log("tuleeko tähän")}
       <h2>Anecdotes</h2>
       <Notification />
       <Filter />
