@@ -1,7 +1,7 @@
 import { createContext, useReducer } from 'react'
 import { useEffect } from 'react'
 
-export const notificationReducer = (state, action, notificationDispatch)=> {
+export const notificationReducer = (state, action)=> {
     switch(action.type){
       case "ADD":
         return `Added anecdote: ${action.content}`
