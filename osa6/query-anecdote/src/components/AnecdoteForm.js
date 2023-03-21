@@ -12,6 +12,9 @@ const AnecdoteForm = () => {
     onSuccess: () => {
       
       queryClient.invalidateQueries('anecdotes')
+    },
+    onError: () => {
+      notificationDispatch({ type: "ERROR" })
     }
   })
 
